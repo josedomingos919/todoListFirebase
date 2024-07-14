@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from "react-native";
+import { auth, firebaseAuth } from "../../services/firebaseConnection";
 
 export default function Login() {
   const [type, setType] = useState("login");
@@ -13,7 +14,31 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = () => {};
+  const handleLogin = () => {
+    if (type == "login") {
+      const user = firebaseAuth
+        .signInWithEmailAndPassword(auth, email, password)
+        .then((user) => {
+          console.log(user);
+        })
+        .catch((error) => {
+          console.log(error);
+          alert("Ops parece que deu algum erro.");
+          return;
+        });
+    } else {
+      const user = firebaseAuth
+        .createUserWithEmailAndPassword(auth, email, password)
+        .then((user) => {
+          console.log(user);
+        })
+        .catch((error) => {
+          console.log(error);
+          alert("Ops parece que deu algum erro.");
+          return;
+        });
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
