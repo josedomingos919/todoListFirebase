@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { auth, firebaseAuth } from "../../services/firebaseConnection";
 
-export default function Login() {
+export default function Login({ changeStatus }) {
   const [type, setType] = useState("login");
 
   const [email, setEmail] = useState("");
@@ -16,10 +16,10 @@ export default function Login() {
 
   const handleLogin = () => {
     if (type == "login") {
-      const user = firebaseAuth
+      firebaseAuth
         .signInWithEmailAndPassword(auth, email, password)
         .then((user) => {
-          console.log(user);
+          changeStatus(user.user.uid);
         })
         .catch((error) => {
           console.log(error);
@@ -27,10 +27,10 @@ export default function Login() {
           return;
         });
     } else {
-      const user = firebaseAuth
+      firebaseAuth
         .createUserWithEmailAndPassword(auth, email, password)
         .then((user) => {
-          console.log(user);
+          changeStatus(user.user.uid);
         })
         .catch((error) => {
           console.log(error);
